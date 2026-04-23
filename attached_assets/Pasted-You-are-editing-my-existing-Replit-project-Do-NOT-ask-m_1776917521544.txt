@@ -1,0 +1,79 @@
+You are editing my existing Replit project. Do NOT ask me to manually edit files. Directly create/overwrite the required static files at the project root:
+
+REQUIRED FILES:
+- index.html
+- about.html
+- privacy.html
+- terms.html
+- robots.txt
+- sitemap.xml
+
+CRITICAL CONFIG (I have NOT purchased the domain yet, but sitemap/canonical MUST use this planned final domain, NOT replit or pages.dev):
+SITE_URL = "https://ontariojobcompliance.ca"
+BRAND_NAME = "Ontario Job Posting Compliance Checker"
+
+ABSOLUTE REQUIREMENTS:
+A) UI/UX
+- Mobile-first responsive layout:
+  - Desktop: split-screen (left input panel, right scorecard)
+  - Mobile: stacked
+- Left side:
+  - textarea for job posting content
+  - salaryMin (number) and salaryMax (number) inputs (annual CAD)
+  - button: "Insert AI Disclosure Template" (append a template, but DO NOT duplicate if disclosure already exists)
+  - button: "Copy to Clipboard" copies textarea content
+- Right side:
+  - live Compliance Scorecard with Red/Orange/Green pills (salary spread, prohibited phrase, AI disclosure)
+  - overall banner (Red if any red; else Orange if any orange; else Green)
+  - numeric score out of 100 (simple deductions ok)
+- localStorage persistence for textarea + salary inputs
+- accessibility: labels, focus styles, aria-live status updates
+
+B) Logic rules (implement in JS on index.html)
+1) Salary Spread:
+   - if salaryMin >= 200000 => GREEN PASS regardless of spread
+   - else if salaryMin or salaryMax missing/invalid => ORANGE “Need salary range to assess”
+   - else if (salaryMax - salaryMin) > 50000 => RED
+   - else GREEN
+2) Prohibited phrase:
+   - ORANGE if "Canadian experience" detected case-insensitive, allow multiple whitespace/newlines (regex should catch "Canadian    experience")
+   - else GREEN
+3) AI Disclosure:
+   - RED if NO mention of AI/automated terms (case-insensitive)
+   - Accept matches: "AI", "A.I.", "artificial intelligence", "automated", "automation"
+   - GREEN if present
+
+C) SEO (index.html)
+- Title + meta description
+- Open Graph tags including og:url = SITE_URL + "/"
+- Canonical link EXACTLY SITE_URL + "/"
+- JSON-LD:
+  1) WebApplication schema with "url": SITE_URL + "/"
+  2) FAQPage schema with at least 5 FAQs relevant to Ontario recruiters, pay transparency, AI disclosure, and “Canadian experience”
+- Make it clean and production-ready.
+
+D) SITEMAP/ROBOTS (MOST IMPORTANT)
+- robots.txt must include: Sitemap: SITE_URL + "/sitemap.xml"
+- sitemap.xml must contain ONLY absolute URLs on SITE_URL (NOT replit, NOT pages.dev):
+  - SITE_URL + "/"
+  - SITE_URL + "/about.html"
+  - SITE_URL + "/privacy.html"
+  - SITE_URL + "/terms.html"
+- Scan all files and ensure there are ZERO occurrences of:
+  - "replit.com"
+  - "pages.dev"
+  - "localhost"
+inside canonical/JSON-LD URLs, robots.txt, and sitemap.xml.
+
+PAGES CONTENT:
+- about.html: what it is, who it’s for, how it works, CONTACT_EMAIL
+- privacy.html: simple privacy policy (no tracking by default; localStorage note)
+- terms.html: not legal advice + limitation of liability
+
+TAILWIND:
+- Use Tailwind via CDN (no build step).
+
+FINAL OUTPUT IN CHAT:
+1) Confirm each required file exists.
+2) Print the FULL contents of robots.txt and sitemap.xml.
+3) List any detected preview URLs (should be none).
