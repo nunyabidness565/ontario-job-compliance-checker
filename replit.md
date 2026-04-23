@@ -25,3 +25,7 @@ pnpm workspace monorepo using TypeScript. Each package manages its own dependenc
 - `pnpm --filter @workspace/api-server run dev` — run API server locally
 
 See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details.
+
+## Artifacts
+
+- `artifacts/compliance-checker` — Static Ontario Job Posting Compliance Checker (Bill 149 / Working for Workers Act). Plain HTML + Tailwind CDN, no build step. `index.html` lives at the project root; `about.html`, `privacy.html`, `terms.html`, `robots.txt`, and `sitemap.xml` live in `public/` and are served as-is by Vite. Final domain placeholder: `https://ontariojobcompliance.ca`.

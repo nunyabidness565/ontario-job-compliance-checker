@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ontario Job Posting Compliance Checker | Bill 149 / Working for Workers Act</title>
+  <meta name="description" content="Free tool for Ontario recruiters to check job postings for Bill 149 / Working for Workers Act compliance: salary range spread, AI disclosure, and prohibited 'Canadian experience' language." />
+
+  <!-- Canonical: final custom domain -->
+  <link rel="canonical" href="https://ontariojobcompliance.ca/" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Ontario Job Posting Compliance Checker" />
+  <meta property="og:description" content="Check Ontario job postings against Bill 149 / Working for Workers Act rules in seconds. Salary range, AI disclosure, and prohibited language checks." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://ontariojobcompliance.ca/" />
+  <meta property="og:site_name" content="Ontario Job Posting Compliance Checker" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Ontario Job Posting Compliance Checker" />
+  <meta name="twitter:description" content="Check Ontario job postings against Bill 149 / Working for Workers Act rules in seconds." />
+
+  <!-- Tailwind via CDN (no build step) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- JSON-LD: WebApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Ontario Job Posting Compliance Checker",
+    "url": "https://ontariojobcompliance.ca/",
+    "description": "Free tool for Ontario recruiters to check job postings for compliance with Bill 149 / Working for Workers Act, including salary range spread, AI disclosure, and prohibited 'Canadian experience' language.",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Any (web-based)",
+    "browserRequirements": "Requires JavaScript",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "CAD"
+    }
+  }
+  </script>
+
+  <!-- JSON-LD: FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Do Ontario job postings have to include a salary range?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Under Ontario's Working for Workers Four Act (Bill 149) amendments, publicly advertised job postings must include the expected compensation or a range. The range cannot be unreasonably wide. This tool flags ranges with a spread greater than $50,000 CAD as high risk, except for senior roles where the minimum salary is $200,000 or more."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the maximum allowed salary range in an Ontario job posting?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Ontario regulations cap the spread on publicly advertised salary ranges. As implemented in this checker, a range is flagged as non-compliant if (max - min) exceeds $50,000 CAD, unless the minimum is $200,000 or more. Always check the current Ontario Ministry of Labour guidance for the rule in force."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do Ontario employers have to disclose the use of AI in hiring?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Ontario's Working for Workers Four Act requires that publicly advertised job postings disclose whether artificial intelligence is used to screen, assess, or select applicants. This tool checks your posting for any mention of 'AI', 'A.I.', 'artificial intelligence', 'automated', or 'automation' and flags postings that lack this disclosure."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why is asking for 'Canadian experience' a problem?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Ontario's Working for Workers Act restricts requirements for Canadian work experience in publicly advertised job postings and on application forms. The Ontario Human Rights Commission also considers blanket 'Canadian experience' requirements as discriminatory in most cases. This tool flags any posting that contains the phrase 'Canadian experience' for review."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is this checker a substitute for legal advice?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. This tool is provided for general informational purposes only and is not legal advice. Always confirm requirements with the official Ontario Ministry of Labour guidance and consult a qualified employment lawyer for advice on specific job postings or compliance programs."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does this tool store my job posting content?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. All checks run entirely in your browser. Your job posting text and salary inputs are saved only in your browser's localStorage on your own device, so you can return to your draft. Nothing is sent to a server."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    /* Visible focus styles for accessibility */
+    :focus-visible {
+      outline: 2px solid #2563eb;
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col">
+
+  <!-- Header / Nav -->
+  <header class="bg-white border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+      <a href="/" class="text-lg sm:text-xl font-semibold text-slate-900">
+        Ontario Job Posting Compliance Checker
+      </a>
+      <nav aria-label="Primary" class="flex flex-wrap gap-4 text-sm">
+        <a class="text-slate-600 hover:text-slate-900" href="/about.html">About</a>
+        <a class="text-slate-600 hover:text-slate-900" href="/privacy.html">Privacy</a>
+        <a class="text-slate-600 hover:text-slate-900" href="/terms.html">Terms</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="flex-1">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
+      <div class="mb-6">
+        <h1 class="text-2xl sm:text-3xl font-bold text-slate-900">Check your Ontario job posting in seconds</h1>
+        <p class="mt-2 text-sm sm:text-base text-slate-600 max-w-3xl">
+          Paste your job posting and salary range below. We'll instantly check it against Ontario's
+          Bill 149 / Working for Workers Act rules: salary range spread, AI disclosure, and prohibited
+          "Canadian experience" language.
+        </p>
+        <p class="mt-2 text-xs text-slate-500">
+          Not legal advice. Always check official Ontario Ministry of Labour guidance.
+        </p>
+      </div>
+
+      <!-- Mobile: stacked. Desktop: split-screen (left input / right scorecard) -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+        <!-- LEFT: Inputs -->
+        <section aria-labelledby="input-heading" class="bg-white rounded-lg border border-slate-200 p-4 sm:p-6">
+          <h2 id="input-heading" class="text-lg font-semibold mb-4">Your job posting</h2>
+
+          <div class="mb-4">
+            <label for="posting" class="block text-sm font-medium text-slate-700 mb-1">Job posting content</label>
+            <textarea
+              id="posting"
+              name="posting"
+              rows="14"
+              class="w-full rounded-md border border-slate-300 p-3 text-sm font-mono focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              placeholder="Paste the full text of your job posting here..."
+              aria-describedby="posting-help"
+            ></textarea>
+            <p id="posting-help" class="mt-1 text-xs text-slate-500">Saved automatically in your browser.</p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label for="salaryMin" class="block text-sm font-medium text-slate-700 mb-1">Salary minimum (annual CAD)</label>
+              <input
+                type="number"
+                id="salaryMin"
+                name="salaryMin"
+                min="0"
+                step="1000"
+                class="w-full rounded-md border border-slate-300 p-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                placeholder="e.g. 80000"
+              />
+            </div>
+            <div>
+              <label for="salaryMax" class="block text-sm font-medium text-slate-700 mb-1">Salary maximum (annual CAD)</label>
+              <input
+                type="number"
+                id="salaryMax"
+                name="salaryMax"
+                min="0"
+                step="1000"
+                class="w-full rounded-md border border-slate-300 p-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                placeholder="e.g. 110000"
+              />
+            </div>
+          </div>
+
+          <div class="flex flex-wrap gap-2">
+            <button
+              type="button"
+              id="insertAiBtn"
+              class="inline-flex items-center px-3 py-2 text-sm font-medium rounded-md bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+            >
+              Insert AI Disclosure Template
+            </button>
+            <button
+              type="button"
+              id="copyBtn"
+              class="inline-flex items-center px-3 py-2 text-sm font-medium rounded-md bg-slate-200 text-slate-900 hover:bg-slate-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+            >
+              Copy to Clipboard
+            </button>
+            <button
+              type="button"
+              id="clearBtn"
+              class="inline-flex items-center px-3 py-2 text-sm font-medium rounded-md bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+            >
+              Clear
+            </button>
+            <span id="copyStatus" class="text-xs text-slate-500 self-center" aria-live="polite"></span>
+          </div>
+        </section>
+
+        <!-- RIGHT: Scorecard -->
+        <aside aria-labelledby="scorecard-heading" class="bg-white rounded-lg border border-slate-200 p-4 sm:p-6">
+          <h2 id="scorecard-heading" class="text-lg font-semibold mb-4">Compliance Scorecard</h2>
+
+          <!-- Overall summary -->
+          <div
+            id="overallBox"
+            class="rounded-md border p-4 mb-4"
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            <div class="flex items-center justify-between gap-3">
+              <div>
+                <div class="text-xs uppercase tracking-wide text-slate-500">Overall status</div>
+                <div id="overallLabel" class="text-lg font-semibold mt-0.5">—</div>
+                <div id="overallNote" class="text-sm text-slate-600 mt-1">Start typing to see your score.</div>
+              </div>
+              <div class="text-right">
+                <div class="text-xs uppercase tracking-wide text-slate-500">Score</div>
+                <div id="overallScore" class="text-3xl font-bold">—</div>
+                <div class="text-xs text-slate-500">/ 100</div>
+              </div>
+            </div>
+          </div>
+
+          <ul class="space-y-3">
+            <!-- Salary -->
+            <li id="check-salary" class="rounded-md border border-slate-200 p-3">
+              <div class="flex items-start gap-3">
+                <span class="indicator inline-block mt-1 h-3 w-3 rounded-full bg-slate-300" aria-hidden="true"></span>
+                <div class="flex-1">
+                  <div class="font-medium">Salary range spread</div>
+                  <div class="status text-sm text-slate-600 mt-0.5">Awaiting input.</div>
+                  <div class="guidance text-xs text-slate-500 mt-1">
+                    Ontario expects realistic ranges. We flag spreads over $50,000 unless the minimum is $200,000+.
+                  </div>
+                </div>
+              </div>
+            </li>
+            <!-- Canadian experience -->
+            <li id="check-canexp" class="rounded-md border border-slate-200 p-3">
+              <div class="flex items-start gap-3">
+                <span class="indicator inline-block mt-1 h-3 w-3 rounded-full bg-slate-300" aria-hidden="true"></span>
+                <div class="flex-1">
+                  <div class="font-medium">"Canadian experience" language</div>
+                  <div class="status text-sm text-slate-600 mt-0.5">Awaiting input.</div>
+                  <div class="guidance text-xs text-slate-500 mt-1">
+                    Avoid blanket "Canadian experience" requirements; they are restricted in Ontario job postings.
+                  </div>
+                </div>
+              </div>
+            </li>
+            <!-- AI disclosure -->
+            <li id="check-ai" class="rounded-md border border-slate-200 p-3">
+              <div class="flex items-start gap-3">
+                <span class="indicator inline-block mt-1 h-3 w-3 rounded-full bg-slate-300" aria-hidden="true"></span>
+                <div class="flex-1">
+                  <div class="font-medium">AI / automated screening disclosure</div>
+                  <div class="status text-sm text-slate-600 mt-0.5">Awaiting input.</div>
+                  <div class="guidance text-xs text-slate-500 mt-1">
+                    Disclose use of AI or automated tools to screen applicants. Use the template button on the left.
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+
+          <p class="mt-4 text-xs text-slate-500">
+            This is a guidance tool, not legal advice. Always verify with official Ontario Ministry of Labour
+            resources and your legal counsel.
+          </p>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <footer class="border-t border-slate-200 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6 text-xs text-slate-500 flex flex-col sm:flex-row gap-2 sm:gap-4 sm:items-center sm:justify-between">
+      <div>&copy; <span id="year"></span> Ontario Job Posting Compliance Checker. Not legal advice.</div>
+      <div class="flex gap-4">
+        <a href="/about.html" class="hover:text-slate-700">About</a>
+        <a href="/privacy.html" class="hover:text-slate-700">Privacy</a>
+        <a href="/terms.html" class="hover:text-slate-700">Terms</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ---------- AI disclosure template ----------
+    const AI_TEMPLATE = "AI Disclosure: This employer may use artificial intelligence (AI) and automated tools to assist in screening, assessing, or selecting applicants for this position. Decisions are reviewed by qualified human personnel. Applicants may request more information about how AI is used in this hiring process.";
+
+    // ---------- Element refs ----------
+    const $posting   = document.getElementById('posting');
+    const $min       = document.getElementById('salaryMin');
+    const $max       = document.getElementById('salaryMax');
+    const $insertBtn = document.getElementById('insertAiBtn');
+    const $copyBtn   = document.getElementById('copyBtn');
+    const $clearBtn  = document.getElementById('clearBtn');
+    const $copyStatus= document.getElementById('copyStatus');
+
+    const $overallBox   = document.getElementById('overallBox');
+    const $overallLabel = document.getElementById('overallLabel');
+    const $overallNote  = document.getElementById('overallNote');
+    const $overallScore = document.getElementById('overallScore');
+
+    const $checkSalary = document.getElementById('check-salary');
+    const $checkCan    = document.getElementById('check-canexp');
+    const $checkAi     = document.getElementById('check-ai');
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // ---------- localStorage persistence ----------
+    const LS_KEY = 'on-job-checker-v1';
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(LS_KEY);
+        if (!raw) return;
+        const s = JSON.parse(raw);
+        if (typeof s.posting === 'string') $posting.value = s.posting;
+        if (s.salaryMin != null) $min.value = s.salaryMin;
+        if (s.salaryMax != null) $max.value = s.salaryMax;
+      } catch (_) { /* ignore */ }
+    }
+    function saveState() {
+      const s = {
+        posting: $posting.value,
+        salaryMin: $min.value,
+        salaryMax: $max.value
+      };
+      try { localStorage.setItem(LS_KEY, JSON.stringify(s)); } catch (_) {}
+    }
+
+    // ---------- Color helpers ----------
+    const COLORS = {
+      green:  { dot: 'bg-emerald-500', box: 'border-emerald-300 bg-emerald-50',  label: 'text-emerald-800' },
+      orange: { dot: 'bg-amber-500',   box: 'border-amber-300 bg-amber-50',      label: 'text-amber-800'   },
+      red:    { dot: 'bg-rose-500',    box: 'border-rose-300 bg-rose-50',        label: 'text-rose-800'    },
+      neutral:{ dot: 'bg-slate-300',   box: 'border-slate-200 bg-white',         label: 'text-slate-800'   }
+    };
+
+    function setCheck(el, level, statusText) {
+      const dot = el.querySelector('.indicator');
+      const status = el.querySelector('.status');
+      // reset
+      dot.className = 'indicator inline-block mt-1 h-3 w-3 rounded-full ' + COLORS[level].dot;
+      status.textContent = statusText;
+    }
+
+    function setOverall(level, label, note, score) {
+      $overallBox.className = 'rounded-md border p-4 mb-4 ' + COLORS[level].box;
+      $overallLabel.className = 'text-lg font-semibold mt-0.5 ' + COLORS[level].label;
+      $overallLabel.textContent = label;
+      $overallNote.textContent = note;
+      $overallScore.textContent = String(score);
+    }
+
+    // ---------- Detection helpers ----------
+    // "Canadian experience" — case-insensitive, allow multiple whitespace between the two words.
+    const CAN_EXP_RE = /\bcanadian\s+experience\b/i;
+
+    // AI / automated mentions — case-insensitive. Accepts AI, A.I., artificial intelligence, automated, automation.
+    const AI_RE = /\b(a\.?\s*i\.?|artificial\s+intelligence|automated|automation)\b/i;
+
+    function checkSalary(min, max) {
+      const minN = Number(min);
+      const maxN = Number(max);
+      const minValid = min !== '' && Number.isFinite(minN) && minN >= 0;
+      const maxValid = max !== '' && Number.isFinite(maxN) && maxN >= 0;
+
+      if (!minValid || !maxValid) {
+        return { level: 'orange', text: 'Need salary range to assess.' };
+      }
+      if (maxN < minN) {
+        return { level: 'orange', text: 'Maximum is lower than minimum — please review.' };
+      }
+      // Senior exemption
+      if (minN >= 200000) {
+        return { level: 'green', text: 'Senior role exemption applies (min ≥ $200,000).' };
+      }
+      const spread = maxN - minN;
+      if (spread > 50000) {
+        return {
+          level: 'red',
+          text: 'Range spread is $' + spread.toLocaleString() + ' — likely too wide (over $50,000).'
+        };
+      }
+      return { level: 'green', text: 'Range spread looks reasonable ($' + spread.toLocaleString() + ').' };
+    }
+
+    function checkCanadianExperience(text) {
+      if (CAN_EXP_RE.test(text)) {
+        return { level: 'orange', text: 'Phrase "Canadian experience" found — review and consider removing.' };
+      }
+      return { level: 'green', text: 'No "Canadian experience" requirement detected.' };
+    }
+
+    function checkAiDisclosure(text) {
+      if (AI_RE.test(text)) {
+        return { level: 'green', text: 'AI / automated screening disclosure detected.' };
+      }
+      return { level: 'red', text: 'No AI / automated screening disclosure found.' };
+    }
+
+    // ---------- Run all checks ----------
+    function runChecks() {
+      const text = $posting.value || '';
+      const salary = checkSalary($min.value, $max.value);
+      const canExp = checkCanadianExperience(text);
+      const ai     = checkAiDisclosure(text);
+
+      setCheck($checkSalary, salary.level, salary.text);
+      setCheck($checkCan,    canExp.level, canExp.text);
+      setCheck($checkAi,     ai.level,     ai.text);
+
+      // Score: start at 100, deduct per issue.
+      // RED = -30, ORANGE = -15
+      let score = 100;
+      const levels = [salary.level, canExp.level, ai.level];
+      levels.forEach(l => {
+        if (l === 'red') score -= 30;
+        else if (l === 'orange') score -= 15;
+      });
+      if (score < 0) score = 0;
+
+      let overallLevel = 'green';
+      let overallLabel = 'Looks good';
+      let overallNote  = 'No major issues detected. Always confirm with official guidance.';
+      if (levels.includes('red')) {
+        overallLevel = 'red';
+        overallLabel = 'High risk / likely non-compliant';
+        overallNote  = 'One or more required items appear missing or out of range.';
+      } else if (levels.includes('orange')) {
+        overallLevel = 'orange';
+        overallLabel = 'Needs review';
+        overallNote  = 'Some items need a closer look before publishing.';
+      }
+      setOverall(overallLevel, overallLabel, overallNote, score);
+    }
+
+    // ---------- Buttons ----------
+    $insertBtn.addEventListener('click', () => {
+      const current = $posting.value || '';
+      // Avoid duplication (case-insensitive substring match on the template's distinctive opening).
+      if (current.toLowerCase().includes('ai disclosure:')) {
+        $copyStatus.textContent = 'AI disclosure already present.';
+        setTimeout(() => { $copyStatus.textContent = ''; }, 2500);
+        return;
+      }
+      const sep = current.trim().length === 0 ? '' : '\n\n';
+      $posting.value = current + sep + AI_TEMPLATE;
+      saveState();
+      runChecks();
+      $posting.focus();
+    });
+
+    $copyBtn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText($posting.value || '');
+        $copyStatus.textContent = 'Copied to clipboard.';
+      } catch (_) {
+        // Fallback
+        $posting.select();
+        try { document.execCommand('copy'); $copyStatus.textContent = 'Copied to clipboard.'; }
+        catch (_) { $copyStatus.textContent = 'Copy failed — please copy manually.'; }
+      }
+      setTimeout(() => { $copyStatus.textContent = ''; }, 2500);
+    });
+
+    $clearBtn.addEventListener('click', () => {
+      $posting.value = '';
+      $min.value = '';
+      $max.value = '';
+      saveState();
+      runChecks();
+    });
+
+    // ---------- Wire input listeners ----------
+    ['input', 'change'].forEach(evt => {
+      $posting.addEventListener(evt, () => { saveState(); runChecks(); });
+      $min.addEventListener(evt,     () => { saveState(); runChecks(); });
+      $max.addEventListener(evt,     () => { saveState(); runChecks(); });
+    });
+
+    // ---------- Init ----------
+    loadState();
+    runChecks();
+  </script>
+</body>
+</html>

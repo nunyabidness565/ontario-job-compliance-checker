@@ -1,0 +1,60 @@
+You are an expert front-end engineer and SEO specialist. Generate a complete, production-ready static website (no backend) for an "Ontario Job Posting Compliance Checker (Bill 149 / Working for Workers Act)" aimed at Ontario recruiters.
+
+HARD REQUIREMENTS:
+- Output MUST be plain static files: index.html, about.html, privacy.html, terms.html, robots.txt, sitemap.xml
+- Use Tailwind CSS via CDN in each HTML file (no build step).
+- Mobile-first responsive layout:
+  - Desktop: split-screen (left input / right scorecard)
+  - Mobile: stacked layout
+- Left side (index.html):
+  - Large textarea for job posting content
+  - Two number inputs: salaryMin and salaryMax (annual CAD)
+  - Button: "Insert AI Disclosure Template" (inserts template into textarea, appended with spacing; do not duplicate if already present)
+  - Button: "Copy to Clipboard" (copies textarea content)
+- Right side: live "Compliance Scorecard" with Red/Orange/Green indicators and plain-English guidance.
+- Logic rules (must be implemented in JS):
+  1) Salary Spread:
+     - RED if (salaryMax - salaryMin) > 50000
+     - BUT PASS (GREEN) if salaryMin >= 200000 regardless of spread
+     - If salaryMin or salaryMax missing/invalid => ORANGE “Need salary range to assess”
+  2) Prohibited phrase:
+     - ORANGE if the phrase "Canadian experience" appears (case-insensitive, allow multiple spaces/newlines)
+     - GREEN otherwise
+  3) AI Disclosure:
+     - RED if there is no mention of "AI" or "automated" (case-insensitive). Accept matches like "AI", "A.I.", "artificial intelligence", "automated", "automation".
+     - GREEN if present
+- Show an overall status summary at top of scorecard:
+  - If any RED => Overall RED “High risk / likely non-compliant”
+  - Else if any ORANGE => Overall ORANGE “Needs review”
+  - Else GREEN “Looks good”
+  - Include a numeric score out of 100 (simple deduction system is fine).
+- Add small disclaimers: “Not legal advice” + “Check official guidance”.
+- Persist textarea + salary inputs in localStorage.
+- Add basic accessibility: labels, aria-live for status updates, focus styles.
+
+SEO REQUIREMENTS (index.html):
+- Title + meta description.
+- Canonical URL MUST use the final custom domain, not preview domains.
+- Include JSON-LD:
+  1) WebApplication schema
+  2) FAQPage schema (at least 5 FAQs relevant to Ontario job posting transparency, AI disclosure, and 'Canadian experience')
+- Add Open Graph meta tags.
+
+SITEMAP/ROBOTS CRITICAL REQUIREMENT:
+- sitemap.xml MUST contain absolute URLs using the final custom domain ONLY (no Replit URLs, no Cloudflare preview URLs).
+- robots.txt MUST include Sitemap: https://FINAL_DOMAIN/sitemap.xml
+
+SETTINGS (edit these exactly):
+- Brand/site name: "Ontario Job Posting Compliance Checker"
+- Final custom domain (use this everywhere canonical/JSON-LD/sitemap/robots):
+  SITE_URL = "https://YOUR-FINAL-DOMAIN"
+  Example: "https://ontariojobcompliance.ca"
+- Contact email (display on About page): "you@example.com"
+
+CONTENT PAGES:
+- about.html: purpose, who it’s for, how it works, contact email.
+- privacy.html: simple privacy policy (no tracking by default; localStorage note).
+- terms.html: terms + no legal advice disclaimer + limitation of liability.
+
+DELIVERABLE:
+Print the full contents of each file (index.html, about.html, privacy.html, terms.html, robots.txt, sitemap.xml). Keep code clean and commented.

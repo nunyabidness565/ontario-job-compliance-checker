@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About | Ontario Job Posting Compliance Checker</title>
+  <meta name="description" content="About the Ontario Job Posting Compliance Checker — purpose, who it's for, and how it works." />
+  <link rel="canonical" href="https://ontariojobcompliance.ca/about.html" />
+  <meta property="og:title" content="About | Ontario Job Posting Compliance Checker" />
+  <meta property="og:description" content="Who this tool is for and how it works." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://ontariojobcompliance.ca/about.html" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col">
+  <header class="bg-white border-b border-slate-200">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+      <a href="/" class="text-lg sm:text-xl font-semibold">Ontario Job Posting Compliance Checker</a>
+      <nav class="flex flex-wrap gap-4 text-sm">
+        <a class="text-slate-600 hover:text-slate-900" href="/">Home</a>
+        <a class="text-slate-600 hover:text-slate-900" href="/privacy.html">Privacy</a>
+        <a class="text-slate-600 hover:text-slate-900" href="/terms.html">Terms</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="flex-1">
+    <article class="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12 prose prose-slate">
+      <h1 class="text-3xl font-bold mb-2">About</h1>
+      <p class="text-slate-600">
+        The Ontario Job Posting Compliance Checker is a free, browser-based tool that helps Ontario
+        recruiters quickly review job postings against the publicly advertised job posting rules
+        introduced by Bill 149 (Working for Workers Four Act).
+      </p>
+
+      <h2 class="text-xl font-semibold mt-8 mb-2">Purpose</h2>
+      <p class="text-slate-700">
+        Ontario has tightened transparency rules for job postings — including expected compensation
+        ranges, disclosure of artificial intelligence used in hiring, and restrictions on requiring
+        "Canadian experience". Many recruiters need a fast sanity check before publishing. This tool
+        gives you a Red / Orange / Green scorecard in seconds, with plain-English guidance.
+      </p>
+
+      <h2 class="text-xl font-semibold mt-8 mb-2">Who it's for</h2>
+      <ul class="list-disc pl-6 text-slate-700">
+        <li>In-house Ontario recruiters and talent teams</li>
+        <li>Agency recruiters posting roles on behalf of Ontario employers</li>
+        <li>Hiring managers writing their own job ads</li>
+        <li>HR and compliance leads reviewing posting templates</li>
+      </ul>
+
+      <h2 class="text-xl font-semibold mt-8 mb-2">How it works</h2>
+      <ol class="list-decimal pl-6 text-slate-700">
+        <li>Paste your job posting text into the editor.</li>
+        <li>Enter the expected annual minimum and maximum salary in CAD.</li>
+        <li>The tool checks for: (a) salary range spread, (b) the prohibited phrase "Canadian experience", and (c) AI / automated screening disclosure.</li>
+        <li>You get a Red / Orange / Green status for each item, plus an overall score.</li>
+        <li>Use the "Insert AI Disclosure Template" button to add a starter disclosure if needed.</li>
+      </ol>
+      <p class="text-slate-700">
+        All checks run entirely in your browser. Your text and salary inputs are saved only in your
+        browser's localStorage on your own device. No content is sent to a server.
+      </p>
+
+      <h2 class="text-xl font-semibold mt-8 mb-2">Contact</h2>
+      <p class="text-slate-700">
+        Questions, feedback, or corrections? Email
+        <a class="text-blue-700 underline" href="mailto:you@example.com">you@example.com</a>.
+      </p>
+
+      <p class="mt-8 text-xs text-slate-500">
+        This tool is for general information only. It is not legal advice. Always check official
+        Ontario Ministry of Labour guidance and consult a qualified employment lawyer for advice on
+        specific job postings.
+      </p>
+    </article>
+  </main>
+
+  <footer class="border-t border-slate-200 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6 text-xs text-slate-500 flex flex-col sm:flex-row gap-2 sm:items-center sm:justify-between">
+      <div>&copy; <span id="year"></span> Ontario Job Posting Compliance Checker. Not legal advice.</div>
+      <div class="flex gap-4">
+        <a href="/" class="hover:text-slate-700">Home</a>
+        <a href="/privacy.html" class="hover:text-slate-700">Privacy</a>
+        <a href="/terms.html" class="hover:text-slate-700">Terms</a>
+      </div>
+    </div>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>
