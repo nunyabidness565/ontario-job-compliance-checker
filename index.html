@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ontario Job Posting Compliance Checker (Bill 149)</title>
+    <meta name="description" content="Free tool for Ontario recruiters to check job posting compliance with Bill 149 and the Working for Workers Act.">
+    <link rel="canonical" href="https://ontariojobcompliance.ca/">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Ontario Job Posting Compliance Checker",
+      "url": "https://ontariojobcompliance.ca/",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "All"
+    }
+    </script>
+</head>
+<body class="bg-gray-50 text-gray-900 min-h-screen">
+    <nav class="bg-white border-b p-4">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <h1 class="font-bold text-xl text-blue-800">Ontario Job Checker</h1>
+            <div class="space-x-4 text-sm font-medium text-gray-600">
+                <a href="about.html" class="hover:text-blue-800">About</a>
+                <a href="privacy.html" class="hover:text-blue-800">Privacy</a>
+                <a href="terms.html" class="hover:text-blue-800">Terms</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto p-6 grid md:grid-cols-2 gap-8">
+        <div class="space-y-6">
+            <div class="bg-white p-6 rounded-xl shadow-sm border">
+                <label class="block text-sm font-bold mb-2">Job Posting Text</label>
+                <textarea id="jobText" class="w-full h-64 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Paste your job description here..."></textarea>
+                
+                <div class="grid grid-cols-2 gap-4 mt-4">
+                    <div>
+                        <label class="block text-sm font-bold mb-2">Min Salary (Annual CAD)</label>
+                        <input type="number" id="salaryMin" class="w-full p-2 border rounded-lg" placeholder="e.g. 60000">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold mb-2">Max Salary (Annual CAD)</label>
+                        <input type="number" id="salaryMax" class="w-full p-2 border rounded-lg" placeholder="e.g. 100000">
+                    </div>
+                </div>
+
+                <div class="flex gap-2 mt-4">
+                    <button onclick="insertDisclosure()" class="bg-blue-800 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-700">Insert AI Disclosure</button>
+                    <button onclick="copyToClipboard()" class="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg text-sm font-bold hover:bg-gray-300">Copy Posting</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="space-y-6">
+            <div class="bg-white p-6 rounded-xl shadow-sm border sticky top-6">
+                <h2 class="text-xl font-bold mb-4">Compliance Scorecard</h2>
+                <div id="overallStatus" class="p-4 rounded-lg mb-6 text-center font-bold text-lg bg-gray-100">Ready to Analyze</div>
+                
+                <ul class="space-y-4">
+                    <li class="flex items-start gap-3">
+                        <div id="salaryIndicator" class="h-6 w-6 rounded-full bg-gray-200 flex-shrink-0 mt-1"></div>
+                        <div>
+                            <p class="font-bold">Salary Range Rule</p>
+                            <p id="salaryMsg" class="text-sm text-gray-600">Enter salary details to check spread.</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <div id="expIndicator" class="h-6 w-6 rounded-full bg-gray-200 flex-shrink-0 mt-1"></div>
+                        <div>
+                            <p class="font-bold">Prohibited Phrases</p>
+                            <p id="expMsg" class="text-sm text-gray-600">Checking for "Canadian experience" requirement...</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <div id="aiIndicator" class="h-6 w-6 rounded-full bg-gray-200 flex-shrink-0 mt-1"></div>
+                        <div>
+                            <p class="font-bold">AI Disclosure</p>
+                            <p id="aiMsg" class="text-sm text-gray-600">Scanning for automated screening disclosure...</p>
+                        </div>
+                    </li>
+                </ul>
+                
+                <p class="text-[10px] text-gray-400 mt-8 italic">Not affiliated with the Govt of Ontario. Results are estimates and not legal advice.</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const jobText = document.getElementById('jobText');
+        const salaryMin = document.getElementById('salaryMin');
+        const salaryMax = document.getElementById('salaryMax');
+
+        function analyze() {
+            const text = jobText.value;
+            const min = parseFloat(salaryMin.value);
+            const max = parseFloat(salaryMax.value);
+
+            let score = 100;
+            let hasRed = false;
+            let hasOrange = false;
+
+            // 1. Salary Rule
+            const salInd = document.getElementById('salaryIndicator');
+            const salMsg = document.getElementById('salaryMsg');
+            if (isNaN(min) || isNaN(max)) {
+                salInd.className = 'h-6 w-6 rounded-full bg-orange-400';
+                salMsg.innerText = "Salary range is missing or incomplete.";
+                hasOrange = true;
+            } else if (min >= 200000) {
+                salInd.className = 'h-6 w-6 rounded-full bg-green-500';
+                salMsg.innerText = "Compliant. High-income positions are exempt from spread limits.";
+            } else if ((max - min) > 50000) {
+                salInd.className = 'h-6 w-6 rounded-full bg-red-500';
+                salMsg.innerText = "Fail. Salary spread exceeds the $50,000 Bill 149 limit.";
+                hasRed = true;
+            } else {
+                salInd.className = 'h-6 w-6 rounded-full bg-green-500';
+                salMsg.innerText = "Compliant. Salary spread is within legal limits.";
+            }
+
+            // 2. Canadian Experience Rule
+            const expInd = document.getElementById('expIndicator');
+            const expMsg = document.getElementById('expMsg');
+            if (/Canadian experience/i.test(text)) {
+                expInd.className = 'h-6 w-6 rounded-full bg-orange-400';
+                expMsg.innerText = "Warning: 'Canadian experience' requirement may violate OHRC guidelines.";
+                hasOrange = true;
+            } else {
+                expInd.className = 'h-6 w-6 rounded-full bg-green-500';
+                expMsg.innerText = "No prohibited geographic experience phrases detected.";
+            }
+
+            // 3. AI Disclosure Rule
+            const aiInd = document.getElementById('aiIndicator');
+            const aiMsg = document.getElementById('aiMsg');
+            if (/(AI|artificial intelligence|automated|automation)/i.test(text)) {
+                aiInd.className = 'h-6 w-6 rounded-full bg-green-500';
+                aiMsg.innerText = "Disclosure found. Compliant with Bill 149 AI transparency.";
+            } else {
+                aiInd.className = 'h-6 w-6 rounded-full bg-red-500';
+                aiMsg.innerText = "Missing AI disclosure. Bill 149 requires transparency for automated screening.";
+                hasRed = true;
+            }
+
+            const overall = document.getElementById('overallStatus');
+            if (hasRed) {
+                overall.innerText = "NON-COMPLIANT";
+                overall.className = 'p-4 rounded-lg mb-6 text-center font-bold text-lg bg-red-100 text-red-800';
+            } else if (hasOrange) {
+                overall.innerText = "CAUTION REQUIRED";
+                overall.className = 'p-4 rounded-lg mb-6 text-center font-bold text-lg bg-orange-100 text-orange-800';
+            } else {
+                overall.innerText = "COMPLIANT";
+                overall.className = 'p-4 rounded-lg mb-6 text-center font-bold text-lg bg-green-100 text-green-800';
+            }
+        }
+
+        function insertDisclosure() {
+            const disclosure = "\n\nDisclosure: This recruitment process may use artificial intelligence or automated systems to assist in the screening of applicants.";
+            if (!/(AI|artificial intelligence|automated)/i.test(jobText.value)) {
+                jobText.value += disclosure;
+                analyze();
+            }
+        }
+
+        function copyToClipboard() {
+            jobText.select();
+            document.execCommand('copy');
+            alert('Job posting copied to clipboard!');
+        }
+
+        [jobText, salaryMin, salaryMax].forEach(el => el.addEventListener('input', analyze));
+    </script>
+</body>
+</html>
